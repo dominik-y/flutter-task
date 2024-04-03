@@ -15,9 +15,9 @@ class HomePage extends HookConsumerWidget {
     var onItemSelected = ref.read(bottomNavigationIndexProvider.notifier).state;
 
     final List<Widget> _screens = [
-      const Center(child: Text('HomePage')),
-      const Center(child: Text('Produducts')),
-      const Center(child: Text('Log')),
+      const Center(),
+      const Center(),
+      const Center(),
     ];
 
     return Scaffold(

@@ -1,0 +1,1 @@
+ /Users/Dominik/Desktop/flutter-task/.dart_tool/flutter_build/730bd368d3142e9b4b5b655e85add125/native_assets.yaml: 
