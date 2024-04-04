@@ -21,34 +21,73 @@ class HomePage extends HookConsumerWidget {
       const Center(child: Text('Log')),
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          userAvatar.isEmpty
-              ? IconButton(
-                  icon: const Icon(
-                      Icons.account_circle), // Placeholder for no avatar
-                  onPressed: () => {}, // Handle no avatar case (optional)
-                )
-              : CircleAvatar(
-                  backgroundImage:
-                      NetworkImage(userAvatar), // Load image from URL
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color.fromRGBO(42, 45, 53, 1),
+          actions: [
+            userAvatar.isEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.account_circle),
+                    onPressed: () => {},
+                  )
+                : CircleAvatar(
+                    backgroundImage: NetworkImage(userAvatar),
+                    backgroundColor: const Color.fromRGBO(204, 255, 204, 1),
+                  ),
+          ],
+        ),
+        // zaseban AppColor file sa bojama, app typography i app_theme refactorat
+        backgroundColor: const Color.fromRGBO(42, 45, 53, 1),
+        body: _screens[selectedIndex],
+        bottomNavigationBar: NavigationBar(
+          height: 60,
+          destinations: [
+            Padding(
+              padding: const EdgeInsets.only(top: 28),
+              child: NavigationDestination(
+                  icon: Icon(
+                    Icons.home,
+                    color: ref.watch(bottomNavigationIndexProvider) == 0
+                        ? Colors.green
+                        : Colors.grey,
+                  ),
+                  label: ''),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 28),
+              child: NavigationDestination(
+                icon: Icon(
+                  Icons.shopping_bag,
+                  color: ref.watch(bottomNavigationIndexProvider) == 1
+                      ? Colors.green
+                      : Colors.grey,
                 ),
-        ],
-      ),
-      backgroundColor: const Color.fromRGBO(42, 45, 53, 1),
-      body: _screens[selectedIndex],
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: const Color.fromRGBO(121, 127, 117, 0.6),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(
-              icon: Icon(Icons.shopping_bag), label: 'Products'),
-          NavigationDestination(icon: Icon(Icons.list_alt), label: 'Log'),
-        ],
-        selectedIndex: selectedIndex,
-        onDestinationSelected: (index) =>
-            ref.read(bottomNavigationIndexProvider.notifier).state = index,
+                label: '',
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 28),
+              child: NavigationDestination(
+                icon: Icon(
+                  Icons.list_alt,
+                  color: ref.watch(bottomNavigationIndexProvider) == 2
+                      ? Colors.green
+                      : Colors.grey,
+                ),
+                label: '',
+              ),
+            ),
+          ],
+          indicatorColor: const Color.fromRGBO(110, 119, 100, 0.8),
+          backgroundColor: const Color.fromRGBO(90, 94, 86, 0.5),
+          animationDuration: const Duration(seconds: 1),
+          selectedIndex: selectedIndex,
+          onDestinationSelected: (index) =>
+              ref.read(bottomNavigationIndexProvider.notifier).state = index,
+        ),
       ),
     );
   }
