@@ -31,7 +31,12 @@ class HomePage extends HookConsumerWidget {
             userAvatar.isEmpty
                 ? IconButton(
                     icon: const Icon(Icons.account_circle),
-                    onPressed: () => {},
+                    onPressed: () => (
+                      Navigator.pushNamed(
+                        context,
+                        '/userdetailspage',
+                      ),
+                    ),
                   )
                 : CircleAvatar(
                     backgroundImage: NetworkImage(userAvatar),

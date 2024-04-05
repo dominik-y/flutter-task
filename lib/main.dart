@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rolla_task/authentication/presentation/views/login_page.dart';
 import 'package:rolla_task/home/presentation/views/home_page.dart';
+import 'package:rolla_task/user_details/presentation/views/user_details_page.dart';
 
 void main() {
   runApp(
@@ -11,6 +12,7 @@ void main() {
   );
 }
 
+// Mozda ekstraktati myapp u app.dart
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
         '/homepage': (context) => HomePage(
               text: '',
             ),
+        '/userdetailspage': (context) => const UserDetailsPage(
+            firstName: '', lastName: '', email: '', avatarUrl: '', age: 0),
       },
     );
   }

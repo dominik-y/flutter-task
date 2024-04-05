@@ -47,6 +47,4 @@ class AppTheme {
       ),
     ),
   );
-
-  // Vidi treba li appbartheme
 }
