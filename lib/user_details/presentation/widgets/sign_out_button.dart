@@ -28,7 +28,15 @@ class SignOutButton extends HookWidget {
           ),
         ),
         onPressed: onPressed,
-        child: const Text('Sign Out'),
+        child: const Row(
+          children: [
+            Icon(Icons.logout),
+            Padding(
+              padding: EdgeInsets.only(left: 6),
+              child: Text('Sign Out'),
+            ),
+          ],
+        ),
       ),
     );
   }

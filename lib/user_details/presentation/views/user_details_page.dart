@@ -21,35 +21,58 @@ class UserDetailsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Scaffold(
-      backgroundColor: Color.fromRGBO(42, 45, 53, 1),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'User details',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color.fromRGBO(42, 45, 53, 1),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back), // Back button icon
+          color: Colors.white, // Adjust color as needed
+          onPressed: () {
+            Navigator.pop(
+              context,
+            );
+          },
+        ),
+      ),
+      backgroundColor: const Color.fromRGBO(42, 45, 53, 1),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 16),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 32),
               child: CircleAvatar(
                 radius: 50.0,
                 // add image after fetching here
                 backgroundImage: NetworkImage('https://your-image-url.com'),
               ),
             ),
-            CommonTextField(
-              label: 'some text A',
+            const CommonTextField(
+              label: "s",
             ),
-            CommonTextField(
-              label: 'BBBBBB',
+            const CommonTextField(
+              label: 'B',
             ),
-            CommonTextField(
+            const CommonTextField(
               label: '',
             ),
-            CommonTextField(
+            const CommonTextField(
               label: '',
             ),
             Padding(
-              padding: EdgeInsets.only(top: 16.0, right: 16, left: 16),
-              child: SignOutButton(label: 'Sign Me Out'),
+              padding: const EdgeInsets.only(top: 64, right: 16, left: 16),
+              child: SignOutButton(
+                label: 'Sign Me Out',
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  '/loginpage',
+                  // delete token
+                ),
+              ),
             ),
           ],
         ),
