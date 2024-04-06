@@ -1,0 +1,10 @@
+{
+  "@@locale": "en",
+  "appName": "Estatesales",
+  "unexpectedError": "Unexpected error occurred",
+  "usernameLoginLabel": "Enter username",
+  "passwordLoginLabel": "Enter password",
+  "login": "Login",
+  "cancel": "Cancel",
+  "delete": "Delete"
+}
