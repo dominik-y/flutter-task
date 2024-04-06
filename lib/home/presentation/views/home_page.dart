@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:rolla_task/log/presentation/views/logView.dart';
+import 'package:rolla_task/products/presentation/views/products_page.dart';
 
 final bottomNavigationIndexProvider = StateProvider<int>((ref) => 0);
 final userAvatarProvider = StateProvider<String>((ref) => '');
@@ -17,33 +19,44 @@ class HomePage extends HookConsumerWidget {
 
     final _screens = [
       const Center(child: Text('Home')),
-      const Center(child: Text('Products')),
-      const Center(child: Text('Log')),
+      const ProductsPage(),
+      LogView(
+        createdAt: 0,
+        actorUsername: '',
+        payloadDescription: '',
+        eventType: '',
+      ),
     ];
 
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color.fromRGBO(42, 45, 53, 1),
-          actions: [
-            userAvatar.isEmpty
-                ? IconButton(
-                    icon: const Icon(Icons.account_circle),
-                    onPressed: () => (
-                      Navigator.pushNamed(
-                        context,
-                        '/userdetailspage',
-                      ),
-                    ),
-                  )
-                : CircleAvatar(
-                    backgroundImage: NetworkImage(userAvatar),
-                    backgroundColor: const Color.fromRGBO(204, 255, 204, 1),
-                  ),
-          ],
-        ),
+        appBar: selectedIndex == 0
+            ? AppBar(
+                backgroundColor: const Color.fromRGBO(42, 45, 53, 1),
+                title: Text('Home'),
+                actions: [
+                  userAvatar.isEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.account_circle),
+                          onPressed: () => (
+                            Navigator.pushNamed(
+                              context,
+                              '/userdetailspage',
+                            ),
+                          ),
+                        )
+                      : CircleAvatar(
+                          backgroundImage: NetworkImage(userAvatar),
+                          backgroundColor:
+                              const Color.fromRGBO(255, 255, 255, 1),
+                        ),
+                ],
+              )
+            : AppBar(
+                backgroundColor: const Color.fromRGBO(42, 45, 53, 1),
+                title: Text('Home'),
+              ),
         // zaseban AppColor file sa bojama, app typography i app_theme refactorat
         backgroundColor: const Color.fromRGBO(42, 45, 53, 1),
         body: _screens[selectedIndex],

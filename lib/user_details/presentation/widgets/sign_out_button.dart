@@ -18,24 +18,27 @@ class SignOutButton extends HookWidget {
   Widget build(BuildContext context) {
     return FittedBox(
       fit: BoxFit.scaleDown,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size(MediaQuery.of(context).size.width * 0.8, 40),
-        ).merge(
-          ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.grey),
-            foregroundColor: MaterialStateProperty.all(Colors.white),
-          ),
-        ),
-        onPressed: onPressed,
-        child: const Row(
-          children: [
-            Icon(Icons.logout),
-            Padding(
-              padding: EdgeInsets.only(left: 6),
-              child: Text('Sign Out'),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.8, 40),
+          ).merge(
+            ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.grey),
+              foregroundColor: MaterialStateProperty.all(Colors.white),
             ),
-          ],
+          ),
+          onPressed: onPressed,
+          child: const Row(
+            children: [
+              Icon(Icons.logout),
+              Padding(
+                padding: EdgeInsets.only(left: 6),
+                child: Text('Sign Out'),
+              ),
+            ],
+          ),
         ),
       ),
     );
