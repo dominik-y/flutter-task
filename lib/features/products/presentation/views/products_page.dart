@@ -8,23 +8,32 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:rolla_task/common/providers/repository_provider.dart';
 import 'package:rolla_task/domain/models/product.dart';
+import 'package:rolla_task/domain/models/user.dart';
+import 'package:rolla_task/features/authentication/providers/user_provider.dart';
 import 'package:rolla_task/features/products/presentation/widgets/products_card.dart';
-import 'package:rolla_task/features/user_details/presentation/views/user_details_page.dart';
 import 'package:rolla_task/resources.dart';
+import 'package:rolla_task/routing/app_router.gr.dart';
+
+final userDataProvider =
+    StateNotifierProvider<UserNotifier, AsyncValue<User>>((ref) {
+  final authRepository = ref.watch(authRepositoryProvider);
+  return UserNotifier(authRepository);
+});
 
 @RoutePage()
 class ProductsPage extends HookConsumerWidget {
-  final String? userAvatar;
-
   const ProductsPage({
     super.key,
-    this.userAvatar,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final debouncerTimer = useState<Timer?>(null);
     final productsRepository = ref.watch(productRepositoryProvider);
+
+    final userData = ref.watch(userDataProvider);
+    final avatarUrl = userData.value?.image;
+
     final pagingController = useMemoized(
       () => PagingController<int, Product>(firstPageKey: 0),
     );
@@ -80,27 +89,34 @@ class ProductsPage extends HookConsumerWidget {
           style: TextStyle(color: Colors.white),
         ),
         actions: [
-          userAvatar == null
+          avatarUrl != null
               ? Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: IconButton(
                     icon: const Icon(Icons.account_circle),
                     color: Colors.white,
                     onPressed: () {
-                      //context.router.push(UserDetailsPage());
+                      context.router.push(
+                        UserDetailsPage(
+                          onSignOut: () {},
+                        ),
+                      );
                     },
                   ),
                 )
               : ElevatedButton(
                   onPressed: () {
-                    //context.router.push(UserDetailsPage());
+                    context.router.push(
+                      UserDetailsPage(
+                        onSignOut: () {},
+                      ),
+                    );
                   },
-                  child: const CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        'https://robohash.org/Jeanne.png?set=set4'), // ! wrapper fix it
-                    backgroundColor: AppColor.white,
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(avatarUrl ?? ''),
+                    backgroundColor: AppColor.neutral4,
                   ),
-                )
+                ),
         ],
         backgroundColor: AppColor.neutral1,
         bottom: PreferredSize(

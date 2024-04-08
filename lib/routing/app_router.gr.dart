@@ -58,23 +58,18 @@ abstract class $AppRouter extends _i6.RootStackRouter {
       );
     },
     ProductsPage.name: (routeData) {
-      final args = routeData.argsAs<ProductsPageArgs>(
-          orElse: () => const ProductsPageArgs());
       return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i4.ProductsPage(
-          key: args.key,
-          userAvatar: args.userAvatar,
-        ),
+        child: const _i4.ProductsPage(),
       );
     },
     UserDetailsPage.name: (routeData) {
-      final args = routeData.argsAs<UserDetailsPageArgs>(
-          orElse: () => const UserDetailsPageArgs());
+      final args = routeData.argsAs<UserDetailsPageArgs>();
       return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i5.UserDetailsPage(
           key: args.key,
+          onSignOut: args.onSignOut,
           email: args.email,
           firstName: args.firstName,
           lastName: args.lastName,
@@ -192,40 +187,16 @@ class LoginPageArgs {
 
 /// generated route for
 /// [_i4.ProductsPage]
-class ProductsPage extends _i6.PageRouteInfo<ProductsPageArgs> {
-  ProductsPage({
-    _i8.Key? key,
-    String? userAvatar,
-    List<_i6.PageRouteInfo>? children,
-  }) : super(
+class ProductsPage extends _i6.PageRouteInfo<void> {
+  const ProductsPage({List<_i6.PageRouteInfo>? children})
+      : super(
           ProductsPage.name,
-          args: ProductsPageArgs(
-            key: key,
-            userAvatar: userAvatar,
-          ),
           initialChildren: children,
         );
 
   static const String name = 'ProductsPage';
 
-  static const _i6.PageInfo<ProductsPageArgs> page =
-      _i6.PageInfo<ProductsPageArgs>(name);
-}
-
-class ProductsPageArgs {
-  const ProductsPageArgs({
-    this.key,
-    this.userAvatar,
-  });
-
-  final _i8.Key? key;
-
-  final String? userAvatar;
-
-  @override
-  String toString() {
-    return 'ProductsPageArgs{key: $key, userAvatar: $userAvatar}';
-  }
+  static const _i6.PageInfo<void> page = _i6.PageInfo<void>(name);
 }
 
 /// generated route for
@@ -233,6 +204,7 @@ class ProductsPageArgs {
 class UserDetailsPage extends _i6.PageRouteInfo<UserDetailsPageArgs> {
   UserDetailsPage({
     _i8.Key? key,
+    required void Function() onSignOut,
     String? email,
     String? firstName,
     String? lastName,
@@ -243,6 +215,7 @@ class UserDetailsPage extends _i6.PageRouteInfo<UserDetailsPageArgs> {
           UserDetailsPage.name,
           args: UserDetailsPageArgs(
             key: key,
+            onSignOut: onSignOut,
             email: email,
             firstName: firstName,
             lastName: lastName,
@@ -261,6 +234,7 @@ class UserDetailsPage extends _i6.PageRouteInfo<UserDetailsPageArgs> {
 class UserDetailsPageArgs {
   const UserDetailsPageArgs({
     this.key,
+    required this.onSignOut,
     this.email,
     this.firstName,
     this.lastName,
@@ -269,6 +243,8 @@ class UserDetailsPageArgs {
   });
 
   final _i8.Key? key;
+
+  final void Function() onSignOut;
 
   final String? email;
 
@@ -282,6 +258,6 @@ class UserDetailsPageArgs {
 
   @override
   String toString() {
-    return 'UserDetailsPageArgs{key: $key, email: $email, firstName: $firstName, lastName: $lastName, avatarUrl: $avatarUrl, age: $age}';
+    return 'UserDetailsPageArgs{key: $key, onSignOut: $onSignOut, email: $email, firstName: $firstName, lastName: $lastName, avatarUrl: $avatarUrl, age: $age}';
   }
 }

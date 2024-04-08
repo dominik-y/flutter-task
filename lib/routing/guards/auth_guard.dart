@@ -27,4 +27,9 @@ class AuthGuard extends AutoRouteGuard {
       );
     }
   }
+
+  @override
+  Future<void> reevaluate(NavigationResolver resolver, StackRouter router)async {
+
+  };
 }

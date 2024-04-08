@@ -6,7 +6,7 @@ import 'package:rolla_task/domain/models/log.dart';
 // abstract class _LogApi {
 //   factory _LogApi(Dio dio) = __LogApi;
 //
-//   @GET('https://raw.githubusercontent.com/json-iterator/test-data/master/large-file.json');
+//   @GET('');
 //   Future<Log> getBigJson();
 // }
 //

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rolla_task/common/providers/repository_provider.dart';
+import 'package:rolla_task/domain/local/token_store.dart';
 import 'package:rolla_task/domain/models/user.dart';
 import 'package:rolla_task/domain/repositories/auth_repository.dart';
 
@@ -11,6 +12,8 @@ final userProvider =
 
 class UserNotifier extends StateNotifier<AsyncValue<User>> {
   final AuthRepository authRepository;
+  TokenStore? tokenStore;
+
   UserNotifier(this.authRepository) : super(const AsyncValue.loading());
 
   Future<AsyncValue<User>> getCurrentUser() async {
@@ -25,11 +28,10 @@ class UserNotifier extends StateNotifier<AsyncValue<User>> {
     return null;
   }
 
-  // DELETE TOKEN
-  String? deleteBearerToken() {
-    final currentToken = state.value?.token;
-    currentToken == '';
-    return currentToken;
+  String? deleteToken() {
+    state = const AsyncValue.loading();
+    tokenStore?.clearCurrent();
+    return null;
   }
 
   bool isAuthenticated() {

@@ -6,10 +6,12 @@ import 'package:rolla_task/features/user_details/presentation/widgets/common_tex
 import 'package:rolla_task/features/user_details/presentation/widgets/sign_out_button.dart';
 import 'package:rolla_task/resources.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:rolla_task/routing/app_router.gr.dart';
 import 'package:rolla_task/util/snack_bar_util.dart';
 
 @RoutePage()
 class UserDetailsPage extends HookConsumerWidget {
+  final void Function() onSignOut;
   final String? firstName;
   final String? lastName;
   final String? email;
@@ -18,6 +20,7 @@ class UserDetailsPage extends HookConsumerWidget {
 
   const UserDetailsPage({
     super.key,
+    required this.onSignOut,
     this.email,
     this.firstName,
     this.lastName,
@@ -29,6 +32,11 @@ class UserDetailsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userNotifier = ref.watch(userProvider.notifier);
     final user = ref.watch(userProvider);
+
+    Future<void> handleSignOut() async {
+      userNotifier.deleteToken();
+      onSignOut();
+    }
 
     useEffect(() {
       userNotifier.getCurrentUser();
@@ -79,15 +87,13 @@ class UserDetailsPage extends HookConsumerWidget {
                 CommonTextField(
                   label: data.email ?? '',
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 64, right: 16, left: 16),
+                Padding(
+                  padding: const EdgeInsets.only(top: 64, right: 16, left: 16),
                   child: SignOutButton(
-                    label: 'Sign Me Out',
-                    //   onPressed: () => Navigator.pushNamed(
-                    //     context,
-                    //     '/loginpage',
-                    //     // delete token
-                    //   ),
+                    label: '',
+                    onPressed: () {
+                      handleSignOut();
+                    },
                   ),
                 ),
               ],
