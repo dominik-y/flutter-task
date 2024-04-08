@@ -25,6 +25,13 @@ class UserNotifier extends StateNotifier<AsyncValue<User>> {
     return null;
   }
 
+  // DELETE TOKEN
+  String? deleteBearerToken() {
+    final currentToken = state.value?.token;
+    currentToken == '';
+    return currentToken;
+  }
+
   bool isAuthenticated() {
     return state.value?.token != null;
   }

@@ -34,7 +34,6 @@ class UserDetailsPage extends HookConsumerWidget {
       userNotifier.getCurrentUser();
       return null;
     }, [userNotifier]);
-    // lokalne var, samo na promjenu userNotifiera se refresha
 
     return Scaffold(
       appBar: AppBar(
@@ -49,9 +48,7 @@ class UserDetailsPage extends HookConsumerWidget {
           icon: const Icon(Icons.arrow_back), // Back button icon
           color: Colors.white, // Adjust color as needed
           onPressed: () {
-            Navigator.pop(
-              context,
-            );
+            context.router.popForced();
           },
         ),
       ),
@@ -82,15 +79,15 @@ class UserDetailsPage extends HookConsumerWidget {
                 CommonTextField(
                   label: data.email ?? '',
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 64, right: 16, left: 16),
+                const Padding(
+                  padding: EdgeInsets.only(top: 64, right: 16, left: 16),
                   child: SignOutButton(
                     label: 'Sign Me Out',
-                    onPressed: () => Navigator.pushNamed(
-                      context,
-                      '/loginpage',
-                      // delete token
-                    ),
+                    //   onPressed: () => Navigator.pushNamed(
+                    //     context,
+                    //     '/loginpage',
+                    //     // delete token
+                    //   ),
                   ),
                 ),
               ],

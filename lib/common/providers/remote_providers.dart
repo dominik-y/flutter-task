@@ -22,11 +22,14 @@ final Provider<Dio> dioProvider = Provider<Dio>((ref) {
   final dio = Dio()..options = BaseOptions(baseUrl: 'https://dummyjson.com/');
   //..interceptors.add(AuthInterceptorsWrapper(tokenStore: tokenStore));
 
+  // Future<void> logOut(RequestOptions requestOptions, TokenStore tokenStore, Dio dio) async {
+  //   final token = await tokenStore.clearCurrent();
+  // }
+
   return dio
     ..interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          //dodaj u header token
           final token = await tokenStore.getCurrent();
           options.headers['Authorization'] = 'Bearer $token';
           handler.next(options);

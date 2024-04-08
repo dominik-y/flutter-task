@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -6,13 +8,17 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:rolla_task/common/providers/repository_provider.dart';
 import 'package:rolla_task/domain/models/product.dart';
+import 'package:rolla_task/features/products/presentation/widgets/products_card.dart';
+import 'package:rolla_task/features/user_details/presentation/views/user_details_page.dart';
 import 'package:rolla_task/resources.dart';
 
-import '../widgets/products_card.dart';
-
+@RoutePage()
 class ProductsPage extends HookConsumerWidget {
+  final String? userAvatar;
+
   const ProductsPage({
     super.key,
+    this.userAvatar,
   });
 
   @override
@@ -65,7 +71,6 @@ class ProductsPage extends HookConsumerWidget {
       return () {
         pagingController.dispose();
       };
-      //return empty function
     }, [pagingController]);
 
     return Scaffold(
@@ -74,6 +79,29 @@ class ProductsPage extends HookConsumerWidget {
           'Products',
           style: TextStyle(color: Colors.white),
         ),
+        actions: [
+          userAvatar == null
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: IconButton(
+                    icon: const Icon(Icons.account_circle),
+                    color: Colors.white,
+                    onPressed: () {
+                      //context.router.push(UserDetailsPage());
+                    },
+                  ),
+                )
+              : ElevatedButton(
+                  onPressed: () {
+                    //context.router.push(UserDetailsPage());
+                  },
+                  child: const CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        'https://robohash.org/Jeanne.png?set=set4'), // ! wrapper fix it
+                    backgroundColor: AppColor.white,
+                  ),
+                )
+        ],
         backgroundColor: AppColor.neutral1,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(100),

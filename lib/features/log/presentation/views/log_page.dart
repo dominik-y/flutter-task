@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,13 +8,15 @@ import 'package:rolla_task/resources.dart';
 
 final maxCardCountProvider = Provider<int>((_) => 30);
 
-class LogView extends HookConsumerWidget {
-  LogView(
-      {super.key,
-      this.createdAt,
-      this.actorUsername,
-      this.payloadDescription,
-      this.eventType});
+@RoutePage()
+class LogPage extends HookConsumerWidget {
+  LogPage({
+    super.key,
+    this.createdAt,
+    this.actorUsername,
+    this.payloadDescription,
+    this.eventType,
+  });
 
   final String? eventType;
   final String? actorUsername;
@@ -25,8 +28,16 @@ class LogView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Logs',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: AppColor.neutral1,
+      ),
       backgroundColor: AppColor.neutral1,
       // can extract listview as a separate widget
+
       body: ListView.builder(
         itemCount: logCards.length,
         itemBuilder: (context, index) {
