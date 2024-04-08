@@ -1,6 +1,14 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:rolla_task/common/providers/repository_provider.dart';
+import 'package:rolla_task/domain/models/product.dart';
 import 'package:rolla_task/resources.dart';
+
+import '../widgets/products_card.dart';
 
 class ProductsPage extends HookConsumerWidget {
   const ProductsPage({
@@ -9,6 +17,57 @@ class ProductsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final debouncerTimer = useState<Timer?>(null);
+    final productsRepository = ref.watch(productRepositoryProvider);
+    final pagingController = useMemoized(
+      () => PagingController<int, Product>(firstPageKey: 0),
+    );
+
+    final form = useRef(
+      FormGroup({
+        'search': FormControl<String>(),
+      }),
+    );
+
+    form.value.control('search').valueChanges.listen((event) {
+      if (debouncerTimer.value != null) {
+        debouncerTimer.value?.cancel();
+      }
+      debouncerTimer.value = Timer(const Duration(milliseconds: 500), () {
+        pagingController.refresh();
+      });
+    });
+
+    Future<void> fetchPage(int pageKey) async {
+      const pageSize = 15;
+      try {
+        final newItems = await productsRepository.fetchProducts(
+          skip: pageKey,
+          limit: pageSize,
+          search: form.value.control('search').value ?? '',
+        );
+        final isLastPage = newItems.length < pageSize;
+        if (isLastPage) {
+          pagingController.appendLastPage(newItems);
+        } else {
+          final nextPageKey = pageKey + newItems.length;
+          pagingController.appendPage(newItems, nextPageKey);
+        }
+      } catch (error) {
+        pagingController.error = error;
+      }
+    }
+
+    useEffect(() {
+      pagingController.addPageRequestListener((pageKey) {
+        fetchPage(pageKey);
+      });
+      return () {
+        pagingController.dispose();
+      };
+      //return empty function
+    }, [pagingController]);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -16,24 +75,14 @@ class ProductsPage extends HookConsumerWidget {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: AppColor.neutral1,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          color: Colors.white,
-          onPressed: () {
-            Navigator.pop(
-              context,
-            );
-          },
-        ),
-      ),
-      backgroundColor: AppColor.neutral1,
-      body: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: TextField(
-                // controller: _passwordTextController,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(100),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: ReactiveForm(
+              formGroup: form.value,
+              child: ReactiveTextField(
+                formControlName: 'search',
                 decoration: InputDecoration(
                   labelText: 'Search product...',
                   labelStyle: const TextStyle(
@@ -48,7 +97,20 @@ class ProductsPage extends HookConsumerWidget {
                 ),
               ),
             ),
-          ],
+          ),
+        ),
+      ),
+      backgroundColor: AppColor.neutral1,
+      body: Center(
+        child: PagedListView<int, Product>(
+          pagingController: pagingController,
+          builderDelegate: PagedChildBuilderDelegate<Product>(
+            itemBuilder: (context, item, index) => ProductsCard(
+              title: item.title ?? '',
+              brand: item.brand,
+              price: item.price,
+            ),
+          ),
         ),
       ),
     );

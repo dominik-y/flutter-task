@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:rolla_task/features/log/presentation/views/logView.dart';
 import 'package:rolla_task/features/products/presentation/views/products_page.dart';
 import 'package:rolla_task/resources.dart';
+import 'package:rolla_task/routing/app_router.gr.dart';
 
 final bottomNavigationIndexProvider = StateProvider<int>((ref) => 0);
 final userAvatarProvider = StateProvider<String>((ref) => '');
@@ -21,12 +22,7 @@ class HomePage extends HookConsumerWidget {
     final _screens = [
       const Center(child: Text('Home')),
       const ProductsPage(),
-      LogView(
-        createdAt: 0,
-        actorUsername: '',
-        payloadDescription: '',
-        eventType: '',
-      ),
+      LogView(),
     ];
 
     return PopScope(
@@ -45,12 +41,9 @@ class HomePage extends HookConsumerWidget {
                       ? IconButton(
                           icon: const Icon(Icons.account_circle),
                           color: AppColor.white,
-                          onPressed: () => (
-                            Navigator.pushNamed(
-                              context,
-                              '/userdetailspage',
-                            ),
-                          ),
+                          onPressed: () {
+                            context.router.push(UserDetailsPage());
+                          },
                         )
                       : CircleAvatar(
                           backgroundImage: NetworkImage(userAvatar),
@@ -62,7 +55,6 @@ class HomePage extends HookConsumerWidget {
                 backgroundColor: AppColor.neutral1,
                 title: const Text('Home'),
               ),
-        // zaseban AppColor file sa bojama, app typography i app_theme refactorat
         backgroundColor: AppColor.neutral1,
         body: _screens[selectedIndex],
         bottomNavigationBar: NavigationBar(

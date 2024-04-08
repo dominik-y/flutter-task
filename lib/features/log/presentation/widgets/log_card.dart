@@ -12,10 +12,10 @@ class LogCard extends HookConsumerWidget {
 
   LogCard(
       {super.key,
-      required this.createdAt,
-      required this.actorUsername,
-      required this.payloadDescription,
-      required this.eventType});
+      this.createdAt,
+      this.actorUsername,
+      this.payloadDescription,
+      this.eventType});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

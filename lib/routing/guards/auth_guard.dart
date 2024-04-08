@@ -1,18 +1,21 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:rolla_task/domain/repositories/auth_repository.dart';
 import 'package:rolla_task/features/authentication/providers/user_provider.dart';
 import 'package:rolla_task/routing/app_router.gr.dart';
 
 class AuthGuard extends AutoRouteGuard {
-  final UserNotifier sessionNotifier;
+  final AuthRepository authRepository;
 
   AuthGuard({
-    required this.sessionNotifier,
+    required this.authRepository,
   });
 
   @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) {
-    print(sessionNotifier.isAuthenticated());
-    if (sessionNotifier.isAuthenticated()) {
+  Future<void> onNavigation(
+      NavigationResolver resolver, StackRouter router) async {
+    final token = await authRepository.getCurrent();
+
+    if (token != null) {
       resolver.next(true);
     } else {
       resolver.redirect(

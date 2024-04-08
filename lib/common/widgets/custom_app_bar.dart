@@ -6,13 +6,18 @@ class CustomAppBar extends HookWidget {
   final String label;
   final Widget? userIcon;
   final VoidCallback? onUserIconPressed;
-
-  String? title;
-  String? userAvatar;
+  final String? title;
+  final String? userAvatar;
   void onPressed;
 
-  CustomAppBar(
-      {super.key, required this.label, this.userIcon, this.onUserIconPressed});
+  CustomAppBar({
+    super.key,
+    required this.label,
+    this.userIcon,
+    this.onUserIconPressed,
+    this.title,
+    this.userAvatar,
+  });
 
   @override
   Widget build(BuildContext context) {

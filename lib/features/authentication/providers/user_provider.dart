@@ -13,6 +13,18 @@ class UserNotifier extends StateNotifier<AsyncValue<User>> {
   final AuthRepository authRepository;
   UserNotifier(this.authRepository) : super(const AsyncValue.loading());
 
+  Future<AsyncValue<User>> getCurrentUser() async {
+    return state =
+        await AsyncValue.guard(() => authRepository.getCurrentUser());
+  }
+
+  String? getBearerToken() {
+    if (isAuthenticated()) {
+      return 'Bearer ${state.value?.token}';
+    }
+    return null;
+  }
+
   bool isAuthenticated() {
     return state.value?.token != null;
   }
