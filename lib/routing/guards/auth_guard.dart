@@ -28,8 +28,17 @@ class AuthGuard extends AutoRouteGuard {
     }
   }
 
-  @override
-  Future<void> reevaluate(NavigationResolver resolver, StackRouter router)async {
-
-  };
+  // @override
+  // Future<void> reevaluateListenable(
+  //     NavigationResolver resolver, StackRouter router) async {
+  //   final token = await authRepository.clearCurrent();
+  //
+  //   if (token == null) {
+  //     resolver.redirect(
+  //       LoginPage(
+  //         onLoginSuccess: () {},
+  //       ),
+  //     );
+  //   }
+  // }
 }

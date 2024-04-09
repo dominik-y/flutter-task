@@ -89,7 +89,7 @@ class ProductsPage extends HookConsumerWidget {
           style: TextStyle(color: Colors.white),
         ),
         actions: [
-          avatarUrl != null
+          avatarUrl == null
               ? Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: IconButton(

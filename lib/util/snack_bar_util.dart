@@ -6,7 +6,6 @@ void showSnackBar(Object error, BuildContext context) {
       error.toString(),
     ),
   );
-  //delay build
   Future.microtask(
     () => ScaffoldMessenger.of(context).showSnackBar(snackBar),
   );

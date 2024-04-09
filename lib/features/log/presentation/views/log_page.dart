@@ -36,8 +36,6 @@ class LogPage extends HookConsumerWidget {
         backgroundColor: AppColor.neutral1,
       ),
       backgroundColor: AppColor.neutral1,
-      // can extract listview as a separate widget
-
       body: ListView.builder(
         itemCount: logCards.length,
         itemBuilder: (context, index) {

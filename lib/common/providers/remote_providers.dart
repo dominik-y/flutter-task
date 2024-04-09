@@ -20,11 +20,6 @@ Future<String> refreshToken(TokenStore tokenStore, Dio dio) async {
 final Provider<Dio> dioProvider = Provider<Dio>((ref) {
   final tokenStore = ref.watch(tokenStoreProvider);
   final dio = Dio()..options = BaseOptions(baseUrl: 'https://dummyjson.com/');
-  //..interceptors.add(AuthInterceptorsWrapper(tokenStore: tokenStore));
-
-  // Future<void> logOut(RequestOptions requestOptions, TokenStore tokenStore, Dio dio) async {
-  //   final token = await tokenStore.clearCurrent();
-  // }
 
   return dio
     ..interceptors.add(
@@ -66,35 +61,3 @@ final productApiProvider = Provider((ref) {
     ref.read(dioProvider),
   );
 });
-
-// if (response.statusCode == 200 || response.statusCode == 201) {
-//   tokenStore.setCurrent(response.data['token']);
-//   return true;
-// } else {
-//   print('------------');
-//   tokenStore.clearCurrent();
-//   return false;
-// }
-
-// Future<Response<dynamic>> retry(
-//     RequestOptions requestOptions, TokenStore tokenStore, Dio dio) async {
-//   final token = await tokenStore.getCurrent();
-//   final updatedOptions = requestOptions
-//     ..headers['Authorization'] = 'Bearer $token';
-//   final options = Options(
-//     method: requestOptions.method,
-//     headers: updatedOptions.headers,
-//   );
-//   return dio.request<dynamic>(
-//     requestOptions.path,
-//     data: requestOptions.data,
-//     queryParameters: requestOptions.queryParameters,
-//     options: options,
-//   );
-// }
-
-// if (await refreshToken(tokenStore, dio)) {
-//   return handler.resolve(
-//     await retry(error.requestOptions, tokenStore, dio),
-//   );
-//  }

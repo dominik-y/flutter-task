@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:rolla_task/resources.dart';
 
-// HookWidget ****
 class LogCard extends HookConsumerWidget {
-  String? eventType = '';
-  String? actorUsername = '';
-  String? payloadDescription = '';
+  final String? eventType;
+  final String? actorUsername;
+  final String? payloadDescription;
   int? createdAt = 0;
 
   LogCard(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-// HookWidget ****
 class SignOutButton extends HookWidget {
   final dynamic icon;
   final String label;
