@@ -33,9 +33,7 @@ class HomePage extends HookConsumerWidget {
               child: NavigationDestination(
                 icon: Icon(
                   Icons.shopping_bag,
-                  color: ref.watch(bottomNavigationIndexProvider) == 0
-                      ? AppColor.florescentGreen
-                      : AppColor.neutral4,
+                  color: ref.watch(bottomNavigationIndexProvider) == 0 ? AppColor.florescentGreen : AppColor.neutral4,
                 ),
                 label: '',
               ),
@@ -45,9 +43,7 @@ class HomePage extends HookConsumerWidget {
               child: NavigationDestination(
                 icon: Icon(
                   Icons.list_alt,
-                  color: ref.watch(bottomNavigationIndexProvider) == 1
-                      ? AppColor.florescentGreen
-                      : AppColor.neutral4,
+                  color: ref.watch(bottomNavigationIndexProvider) == 1 ? AppColor.florescentGreen : AppColor.neutral4,
                 ),
                 label: '',
               ),
@@ -57,8 +53,7 @@ class HomePage extends HookConsumerWidget {
           backgroundColor: AppColor.neutral2,
           animationDuration: const Duration(seconds: 1),
           selectedIndex: selectedIndex,
-          onDestinationSelected: (index) =>
-              ref.read(bottomNavigationIndexProvider.notifier).state = index,
+          onDestinationSelected: (index) => ref.read(bottomNavigationIndexProvider.notifier).state = index,
         ),
       ),
     );

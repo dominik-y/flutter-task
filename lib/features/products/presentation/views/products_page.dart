@@ -14,8 +14,7 @@ import 'package:rolla_task/features/products/presentation/widgets/products_card.
 import 'package:rolla_task/resources.dart';
 import 'package:rolla_task/routing/app_router.gr.dart';
 
-final userDataProvider =
-    StateNotifierProvider<UserNotifier, AsyncValue<User>>((ref) {
+final userDataProvider = StateNotifierProvider<UserNotifier, AsyncValue<User>>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return UserNotifier(authRepository);
 });

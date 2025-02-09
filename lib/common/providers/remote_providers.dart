@@ -17,38 +17,44 @@ Future<String> refreshToken(TokenStore tokenStore, Dio dio) async {
   return response.data['token'];
 }
 
-final Provider<Dio> dioProvider = Provider<Dio>((ref) {
-  final tokenStore = ref.watch(tokenStoreProvider);
-  final dio = Dio()..options = BaseOptions(baseUrl: 'https://dummyjson.com/');
+final Provider<Dio> dioProvider = Provider<Dio>(
+  (ref) {
+    final tokenStore = ref.watch(tokenStoreProvider);
 
-  return dio
-    ..interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) async {
-          final token = await tokenStore.getCurrent();
-          options.headers['Authorization'] = 'Bearer $token';
-          handler.next(options);
-        },
-        onError: (error, handler) async {
-          if (error.response?.statusCode == 401 &&
-              error.response?.data['name'] == 'TokenExpiredError') {
+    final dio = Dio()
+      ..options = BaseOptions(
+        baseUrl: 'https://dummyjson.com/',
+        connectTimeout: const Duration(seconds: 3),
+        receiveTimeout: const Duration(seconds: 5),
+      );
+
+    return dio
+      ..interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (options, handler) async {
             final token = await tokenStore.getCurrent();
-            if (token != null) {
-              final newToken = refreshToken(tokenStore, dio);
-              error.requestOptions.headers['Authorization'] =
-                  'Bearer $newToken';
-              return handler.resolve(
-                await dio.fetch(error.requestOptions),
-              );
+            options.headers['Authorization'] = 'Bearer $token';
+            handler.next(options);
+          },
+          onError: (error, handler) async {
+            if (error.response?.statusCode == 401 && error.response?.data['name'] == 'TokenExpiredError') {
+              final token = await tokenStore.getCurrent();
+              if (token != null) {
+                final newToken = refreshToken(tokenStore, dio);
+                error.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+                return handler.resolve(
+                  await dio.fetch(error.requestOptions),
+                );
+              }
             }
-          }
-          return handler.next(
-            error,
-          );
-        },
-      ),
-    );
-});
+            return handler.next(
+              error,
+            );
+          },
+        ),
+      );
+  },
+);
 
 final authApiProvider = Provider((ref) {
   return AuthApi(
