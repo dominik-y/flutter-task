@@ -7,6 +7,9 @@
 .pub-preload-cache/
 .pub-cache/
 .pub/
+.vscode/
+android/.gradle/
+ios/
 build/
 flutter_*.png
 linked_*.ds
